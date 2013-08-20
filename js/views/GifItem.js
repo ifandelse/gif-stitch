@@ -29,8 +29,7 @@ define([
 			rendered: {
 				render: function() {
 					this.$el.html( this.imgTemplate( this.model.toJSON() ));
-				},
-				stop : "stopped"
+				}
 			},
 			stopped : {
 				_onEnter: function() {
@@ -114,6 +113,10 @@ define([
 			this.transition("rendered");
 			this.model.set(data, { silent: true });
 			this.render();
+		},
+
+		onGifStopped : function() {
+			this.handle("stop");
 		},
 
 		onprogress: function(data) {

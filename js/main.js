@@ -45,8 +45,6 @@ require.config({
 require(["backbone", "bootstrap","jqbase64", "monopost"], function(){
 	// now load up the app
 	require(["app", "postal"], function(app, postal){
-		window.app = app;
-		window.postal = postal;
 		app.init();
 	});
 });
