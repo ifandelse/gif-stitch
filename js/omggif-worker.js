@@ -3,23 +3,23 @@
 
  Message to worker should be an object with
  {
-	 frames: (array of pixel data objects),
-	 delay: (ms delay per frame),
-	 matte: ([r,g,b] (default white)),
-	 transparent: ([r,g,b] (optional))
+	 frames      : (array of pixel data objects),
+	 delay       : (ms delay per frame),
+	 matte       : ([r,g,b] (default white)),
+	 transparent : ([r,g,b] (optional))
  }
 
  Messages from worker will either be
  {
-	 type: "progress",
-	 data: (percent done, 0.0-1.0)
+    type : "progress",
+    data : (percent done, 0.0-1.0)
  }
  or
  {
-	 type: "gif",
-	 data: (binary gif data),
-	 frameCount: (number of frames),
-	 encodeTime: (ms how long it took to encode)
+	 type       : "gif",
+	 data       : (binary gif data),
+	 frameCount : (number of frames),
+	 encodeTime : (ms how long it took to encode)
  }
 
  */
@@ -116,8 +116,8 @@ onmessage = function ( event ) {
 	for ( i = 0; i < framesLength; i++ ) {
 		addFrame( frames[i] );
 		self.postMessage( {
-			type  : "progress",
-			data  : (i + 1) / framesLength,
+			type : "progress",
+			data : (i + 1) / framesLength,
 			gifId : id
 		} );
 	}
@@ -130,10 +130,10 @@ onmessage = function ( event ) {
 	}
 
 	self.postMessage( {
-		type       : "gif",
-		data       : gifString,
+		type : "gif",
+		data : gifString,
 		frameCount : framesLength,
 		encodeTime : Date.now() - startTime,
-		gifId      : id
+		gifId : id
 	} );
 };

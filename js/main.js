@@ -18,33 +18,33 @@ require.config({
 	},
 
 	shim : {
-		backbone: {
+		backbone : {
 			deps : ["jquery", "underscore"],
-			exports: "Backbone"
+			exports : "Backbone"
 		},
-		bootstrap: {
-			deps: ["jquery"]
+		bootstrap : {
+			deps : ["jquery"]
 		},
 		jqbase64 : {
-			deps: ["jquery"],
-			exports: "jQuery"
+			deps : ["jquery"],
+			exports : "jQuery"
 		},
 		neuquant : {
-			exports: "NeuQuant"
+			exports : "NeuQuant"
 		},
 		omggif : {
-			exports: "GifWriter"
+			exports : "GifWriter"
 		},
-		underscore: {
-			exports: "_"
+		underscore : {
+			exports : "_"
 		}
 	}
 });
 
 // load foundational libs
-require(["backbone", "bootstrap","jqbase64", "monopost"], function(){
+require( ["backbone", "bootstrap", "jqbase64", "monopost"], function () {
 	// now load up the app
-	require(["app", "postal"], function(app, postal){
+	require( ["app", "postal"], function ( app, postal ) {
 		app.init();
-	});
-});
+	} );
+} );
