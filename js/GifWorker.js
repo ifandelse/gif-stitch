@@ -23,7 +23,7 @@ define([
 				} else if ( e.data && e.data.type === "progress" ) {
 					self.emit( "progress", {
 						gifId : e.data.gifId,
-						progress : (e.data.data * 100 )
+						progress : parseInt((e.data.data * 100 ),10) //rounding to int
 					} );
 				}
 			}, false );

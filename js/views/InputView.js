@@ -14,16 +14,17 @@ define([
 		el : '#input-form',
 
 		initialize : function () {
-			var self = this;
-			self.template = _.template( template );
-			self.polling = false;
-			self.frames = [];
-			self.model = new InputModel();
+			this.template = _.template( template );
+			this.polling = false;
+			this.frames = [];
+			this.model = new InputModel();
 		},
 
 		events : {
-			"click #start" : "startCaptures",
-			"click #stop"  : "stopCaptures"
+			"click #start"             : "startCaptures",
+			"click #stop"              : "stopCaptures",
+			"blur input[type='text']"  : "handleConfigChange",
+			"keyup input[type='text']" : "checkIfConfigChange"
 		},
 
 		publications : {
@@ -37,6 +38,7 @@ define([
 		},
 
 		capture : function () {
+			var self = this;
 			if ( this.frames.length < this.model.get( "framesPerGif" ) ) {
 				if ( this.frames.length === 0 ) {
 					this.currentGifId = _.uniqueId( "gif_" );
@@ -47,15 +49,31 @@ define([
 				this.frames.push( imageData );
 				this.startPoll();
 			} else {
-				this.trigger( "framesready", {
-					frames      : this.frames,
-					delay       : this.model.get( "delay" ),
-					matte       : [255, 255, 255],
-					transparent : [0, 255, 0],
-					gifId       : this.currentGifId
-				} );
-				this.frames = [];
-				this.currentGifId = undefined;
+				_.defer(function() {
+					self.trigger( "framesready", {
+						frames      : self.frames,
+						delay       : self.model.get( "delay" ),
+						matte       : [255, 255, 255],
+						transparent : [0, 255, 0],
+						gifId       : self.currentGifId
+					} );
+					self.frames = [];
+					self.currentGifId = undefined;
+				});
+			}
+		},
+
+		handleConfigChange: function(e) {
+			this.model.set({
+				framesPerGif  : this.framesPerGif.val(),
+				frameInterval : this.frameInterval.val(),
+				delay         : this.delay.val()
+			});
+		},
+
+		checkIfConfigChange: function(e) {
+			if ( e.keyCode == 13 ) {
+				this.handleConfigChange();
 			}
 		},
 
@@ -63,15 +81,22 @@ define([
 			this.startPoll();
 		},
 
+		cacheSelectors : function () {
+			this.canvas = document.getElementById( "canvas" );
+			this.context = self.canvas.getContext( "2d" );
+			this.video = document.getElementById( "video" );
+			this.framesPerGif = self.$( "#framesPerGif" );
+			this.frameInterval = self.$( "#frameInterval" );
+			this.delay = self.$( "#delay" );
+		},
+
 		render : function () {
 			var self = this;
 			var videoObj = {
 				"video" : true
 			};
-			self.$el.html( self.template() );
-			self.canvas  = document.getElementById( "canvas" );
-			self.context = self.canvas.getContext( "2d" );
-			self.video   = document.getElementById( "video" );
+			self.$el.html( self.template(self.model.toJSON() ));
+			self.cacheSelectors();
 			if ( navigator.getUserMedia ) { // Standard
 				navigator.getUserMedia( videoObj, function ( stream ) {
 					self.video.src = stream;

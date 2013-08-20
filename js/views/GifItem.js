@@ -23,8 +23,11 @@ define([
 			stitching : {
 				render : function () {
 					this.$el.html( this.progTemplate( this.model.toJSON() ) );
-				},
+				}
+				/*,
+				do we want to ditch an already 'stitching' gif if we cancel?
 				stop : "stopped"
+				*/
 			},
 			rendered : {
 				render : function () {

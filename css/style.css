@@ -1,11 +1,37 @@
-#video-input {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+#input-form {
+    height: 20%;
 }
 
-.vid-ctrl {
-    width: 50px;
+#video-input video {
+    min-width: 10em;
+    max-width: 17em;
+    float:left;
+}
+
+#video-input #ctrls {
+    float:left;
+    margin-left: 1em;
+    margin-top : .5em;
+}
+
+#ctrls label {
+    color: #f5f5f5;
+    width: 8em;
+}
+
+#ctrls input[type="text"] {
+    width: 4.5em;
+    display: inline-block;
+}
+
+#ctrls .form-group {
+    margin-bottom: 2.5%;
+}
+
+#ctrls .btns {
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .gif-list > div {
