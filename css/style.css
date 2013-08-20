@@ -1,0 +1,60 @@
+#video-input {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.vid-ctrl {
+    width: 50px;
+}
+
+.gif-list > div {
+    float: left;
+}
+
+.gif-item {
+    margin-right:2%;
+    margin-bottom: 2%;
+    width: 160px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.gif-item.prog {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+span.glyphicon-remove {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: aliceblue;
+    border-radius: 25%;
+    border: 1pt solid black;
+    padding: 2.5%;
+}
+
+span.glyphicon-remove:hover {
+    background-color: indianred;
+}
+
+span.glyphicon-save {
+    text-decoration: none;
+    color:black;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: aliceblue;
+    border-radius: 25%;
+    border: 1pt solid black;
+    padding: 2.5%;
+}
+
+a span.glyphicon-save:hover {
+    background-color: #7aba7b;
+}
+
+.gif-item.img {
+    position:relative;
+}
