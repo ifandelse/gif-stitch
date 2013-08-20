@@ -71,7 +71,8 @@ define([
 		},
 
 		subscriptions : {
-			onGifStopped : "gifs gif.stopped"
+			onGifStopped : "gifs gif.stopped",
+			onModeChange : "gifs mode.change"
 		},
 
 		attributes : {
@@ -108,8 +109,34 @@ define([
 
 		onDownload : function () {
 			var img = this.$( 'img' )[0];
-			var url = img.src.replace( /^data:image\/[^;]/, 'data:application/octet-stream' );
+			var url;
+			switch(this.mode) {
+				case "blob" :
+					var imageData = atob(img.src.split(',')[1]);
+					var arrayBuffer = new ArrayBuffer(imageData.length);
+					var view = new Uint8Array(arrayBuffer);
+					for (var i=0; i<imageData.length; i++) {
+						view[i] = imageData.charCodeAt(i) & 0xff;
+					}
+					try {
+						// This is the recommended method:
+						var blob = new Blob([arrayBuffer], {type: 'application/octet-stream'});
+					} catch (e) {
+						var builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder);
+						builder.append(arrayBuffer);
+						var blob = builder.getBlob('application/octet-stream');
+						var url = (window.webkitURL || window.URL).createObjectURL(blob);
+					}
+				break;
+				default:
+					var url = img.src.replace( /^data:image\/[^;]/, 'data:application/octet-stream' );
+				break;
+			}
 			window.open( url );
+		},
+
+		onModeChange: function(data) {
+			this.mode = data.mode;
 		},
 
 		ongif : function ( data ) {

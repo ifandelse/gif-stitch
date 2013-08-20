@@ -3,15 +3,15 @@
     <div id="ctrls">
         <form class="" role="">
             <div class="form-group">
-                <label for="framesPerGif" class="">Frames Per Gif</label>
+                <label for="framesPerGif" class="">Frames Per Gif:</label>
                 <input type="text" id="framesPerGif" value="<%= framesPerGif %>" class="form-control" />
             </div>
             <div class="form-group">
-                <label for="frameInterval" class="">Capture Interval</label>
+                <label for="frameInterval" class="">Capture Interval:</label>
                 <input type="text" id="frameInterval" value="<%= frameInterval %>" class="form-control" />
             </div>
             <div class="form-group">
-                <label for="delay" class="">Frame Delay</label>
+                <label for="delay" class="">Frame Delay:</label>
                 <input type="text" id="delay" value="<%= delay %>" class="form-control" />
             </div>
             <div class="form-group btns">
@@ -20,6 +20,16 @@
             </div>
         </form>
     </div>
-
+    <div id="mode">
+        <form class="" role="">
+            <div class="form-group">
+                <label for="downloadMode" class="">Download Mode:</label>
+                <select id="downloadMode">
+                    <option value="normal" selected>Normal</option>
+                    <option value="blob">Use Blob</option>
+                </select>
+            </div>
+        </form>
+    </div>
 </div>
 <canvas style="display: none;" id="canvas" width="720" height="450"></canvas>

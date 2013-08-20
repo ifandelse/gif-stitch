@@ -24,13 +24,15 @@ define([
 			"click #start"             : "startCaptures",
 			"click #stop"              : "stopCaptures",
 			"blur input[type='text']"  : "handleConfigChange",
-			"keyup input[type='text']" : "checkIfConfigChange"
+			"keyup input[type='text']" : "checkIfConfigChange",
+			"change #downloadMode"     : "handleModeChange"
 		},
 
 		publications : {
 			framesready : "omggif frames.ready",
 			gifstarted  : "gifs gif.started",
-			gifstopped  : "gifs gif.stopped"
+			gifstopped  : "gifs gif.stopped",
+			modeChange  : "gifs mode.change"
 		},
 
 		subscriptions : {
@@ -71,6 +73,10 @@ define([
 			});
 		},
 
+		handleModeChange: function() {
+			this.trigger("modeChange", { mode: this.downloadMode.val() });
+		},
+
 		checkIfConfigChange: function(e) {
 			if ( e.keyCode == 13 ) {
 				this.handleConfigChange();
@@ -87,6 +93,7 @@ define([
 			this.video = document.getElementById( "video" );
 			this.framesPerGif = self.$( "#framesPerGif" );
 			this.frameInterval = self.$( "#frameInterval" );
+			this.downloadMode = self.$( "#downloadMode" );
 			this.delay = self.$( "#delay" );
 		},
 
