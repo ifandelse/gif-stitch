@@ -1,9 +1,11 @@
-<span class="glyphicon glyphicon-remove"></span>
-<a href="<%= dataURL %>" download="<%= id %>">
-    <span class="glyphicon glyphicon-save"></span>
-</a>
-<img src="<%= dataURL %>" class="img-thumbnail gif-item">
+<div class="gif-actions">
+	<button href="#" class="glyphicon glyphicon-remove delete-gif-button"></button>
+	<a href="<%= dataURL %>" download="<%= id %>">
+	    <span class="glyphicon glyphicon-save download-gif-button"></span>
+	</a>
+</div>
+<img src="<%= dataURL %>" class="img-thumbnail">
 <div>
     <input style="display:none" type="text" id="fileName" value="<%= fileName %>" />
-    <span id="lblFileName"><%= fileName %></span>
+    <span id="lblFileName" class="file-name"><%= fileName %></span>
 </div>

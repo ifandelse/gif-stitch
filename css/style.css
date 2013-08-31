@@ -1,90 +1,133 @@
-#input-form {
-    height: 20%;
+/*! normalize.css 2012-02-07T12:37 UTC - http://github.com/necolas/normalize.css */article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary{display:block}audio,canvas,video{display:inline-block;*display:inline;*zoom:1}audio:not([controls]){display:none}[hidden]{display:none}html{font-size:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}html,button,input,select,textarea{font-family:sans-serif}body{margin:0}a:focus{outline:thin dotted}a:hover,a:active{outline:0}h1{font-size:2em;margin:.67em 0}h2{font-size:1.5em;margin:.83em 0}h3{font-size:1.17em;margin:1em 0}h4{font-size:1em;margin:1.33em 0}h5{font-size:.83em;margin:1.67em 0}h6{font-size:.75em;margin:2.33em 0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:bold}blockquote{margin:1em 40px}dfn{font-style:italic}mark{background:#ff0;color:#000}p,pre{margin:1em 0}pre,code,kbd,samp{font-family:monospace,serif;_font-family:'courier new',monospace;font-size:1em}pre{white-space:pre;white-space:pre-wrap;word-wrap:break-word}q{quotes:none}q:before,q:after{content:'';content:none}small{font-size:75%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-0.5em}sub{bottom:-0.25em}dl,menu,ol,ul{margin:1em 0}dd{margin:0 0 0 40px}menu,ol,ul{padding:0 0 0 40px}nav ul,nav ol{list-style:none;list-style-image:none}img{border:0;-ms-interpolation-mode:bicubic}svg:not(:root){overflow:hidden}figure{margin:0}form{margin:0}fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0;white-space:normal;*margin-left:-7px}button,input,select,textarea{font-size:100%;margin:0;vertical-align:baseline;*vertical-align:middle}button,input{line-height:normal}button,input[type="button"],input[type="reset"],input[type="submit"]{cursor:pointer;-webkit-appearance:button;*overflow:visible}button[disabled],input[disabled]{cursor:default}input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0;*height:13px;*width:13px}input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input[type="search"]::-webkit-search-decoration,input[type="search"]::-webkit-search-cancel-button{-webkit-appearance:none}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}textarea{overflow:auto;vertical-align:top}table{border-collapse:collapse;border-spacing:0}
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-#video-input video {
-    min-width: 10em;
-    max-width: 17em;
-    float:left;
+body {
+    background: #fff url('../images/wall.png');
 }
 
-#video-input #ctrls {
-    float:left;
-    margin-left: 1em;
-    margin-top : .5em;
+.wrapper {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
-#video-input label {
-    color: #f5f5f5;
-    width: 8em;
+.page-top {
+    background: #fff url('../images/weave.png');
+    box-shadow: 5px 0 15px rgba( 0, 0, 0, 0.75 );
 }
 
-#ctrls input[type="text"] {
-    width: 4.5em;
-    display: inline-block;
+
+.page-title {
+    color: #1F89CA;
+    font-family: 'Luckiest Guy', helvetica, arial;
+    text-transform: uppercase;
+    font-size: 3.5em;
+    margin: 0.75em 0 0.25em;
+    font-weight: normal;
+    text-shadow: 1px 1px 0 #fff;
+    letter-spacing: 5px;
 }
 
-#ctrls .form-group {
-    margin-bottom: 2.5%;
+.interface {
+    padding-bottom: 2em;
 }
 
-#ctrls .btns {
-    text-align: center;
-    margin-top: 1em;
-    margin-bottom: 1em;
-}
 
-#mode {
-    float:right;
-}
-
-.gif-list > div {
+.video-wrapper {
+    width: 50%;
     float: left;
+    background: rgba( 255, 255, 255, 0.5 );
+    border-radius: 4px;
+    border: dashed 1px #bbb;
+    line-height: 0;
+}
+
+video {
+    width: 98%;
+    margin: 1%;
+}
+
+.options {
+    width: 50%;
+    float: right;
+    margin-top: 1em;
+    padding: 1.5em;
+}
+
+input.form-control {
+    width: 50px;
+}
+
+.download-mode {
+    float: right;
+}
+
+.progress-title, .capture-wrapper p {
+    color: #eee;
 }
 
 .gif-item {
-    margin-right:2%;
-    margin-bottom: 2%;
-    width: 160px;
-    vertical-align: middle;
+    width: 100%;
+    max-width: 20em;
+    height: auto;
+    position: relative;
+    float: left;
+    margin: 1.3em;
     text-align: center;
 }
 
-.gif-item.prog {
-    margin-top: auto;
-    margin-bottom: auto;
+.gif-item img {
+    box-shadow: 0 0 10px rgba( 0, 0, 0, 0.75 );
+    width: 100%;
+    height: auto;
 }
 
-span.glyphicon-remove {
+.gif-item img.capture-gif {
+    box-shadow: none;
+    width: auto;
+    height: auto;
+}
+
+.gif-actions {
     position: absolute;
-    top: 0;
-    right: 0;
-    background-color: aliceblue;
-    border-radius: 25%;
-    border: 1pt solid black;
-    padding: 2.5%;
+    width: 100%;
 }
 
-span.glyphicon-remove:hover {
-    background-color: indianred;
+.delete-gif-button, .download-gif-button {
+    display: block;
+    padding: 4px;
+    background: #fff;
+    position: absolute;
+    border-radius: 3px;
+    top: -5px;
+    box-shadow: 0 0 5px rgba( 0, 0, 0, 0.75 );
+    border: none;
 }
 
-span.glyphicon-save {
+.delete-gif-button, .delete-gif-button:hover, .download-gif-button, .download-gif-button:hover {
     text-decoration: none;
-    color:black;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: aliceblue;
-    border-radius: 25%;
-    border: 1pt solid black;
-    padding: 2.5%;
 }
 
-a span.glyphicon-save:hover {
-    background-color: #7aba7b;
+.delete-gif-button, .delete-gif-button:hover {
+    left: -7px;
+    color: #D43737;
 }
 
-.gif-item.img {
-    position:relative;
+.download-gif-button, .download-gif-button:hover {
+    right: -7px;
+    color: #438C4C;
 }
+
+
+.file-name {
+    display: none;
+}
+
+
+

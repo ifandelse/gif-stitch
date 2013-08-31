@@ -1,26 +1,31 @@
-<div id="video-input" class="navbar navbar-inverse">
-    <video class="img-thumbnail" id="video" autoplay></video>
+<div id="video-input" class="video-wrapper">
+    <video id="video" autoplay></video>
+</div>
+<div class="options">
     <div id="ctrls">
         <form class="" role="">
             <div class="form-group">
-                <label for="framesPerGif" class="">Frames Per Gif:</label>
+                <label for="framesPerGif" class="">How many frames do you want?</label>
                 <input type="text" id="framesPerGif" value="<%= framesPerGif %>" class="form-control" />
             </div>
+
             <div class="form-group">
-                <label for="frameInterval" class="">Capture Interval:</label>
-                <input type="text" id="frameInterval" value="<%= frameInterval %>" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="delay" class="">Frame Delay:</label>
+                <label for="delay" class="">How fast should the gif play? (miliseconds between frames)</label>
                 <input type="text" id="delay" value="<%= delay %>" class="form-control" />
             </div>
-            <div class="form-group btns">
-                <button id="start" class="vid-ctrl btn btn-primary">Start</button>
-                <button id="stop" class="vid-ctrl btn btn-default" disabled="disabled">Stop</button>
+
+            <div class="form-group">
+                <label for="frameInterval" class="">How many miliseconds between taking pictures?</label>
+                <input type="text" id="frameInterval" value="<%= frameInterval %>" class="form-control" />
+            </div>
+
+            <div class="buttons">
+                <button id="start" class="btn btn-success">Start Making Gifs!</button>
+                <button id="stop" class="btn btn-inverse" disabled="disabled">Stop</button>
             </div>
         </form>
     </div>
-    <div id="mode">
+    <div id="mode" class="download-mode">
         <form class="" role="">
             <div class="form-group">
                 <label for="downloadMode" class="">Download Mode:</label>

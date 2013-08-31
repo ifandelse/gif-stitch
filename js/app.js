@@ -9,7 +9,7 @@ define([
 		views : { items : [] },
 		init : function () {
 			this.views.input = new InputView().render();
-			this.views.gitList = new GifCollectionView( { collection : new Backbone.Collection() } );
+			this.views.gifList = new GifCollectionView( { collection : new Backbone.Collection() } );
 			this.gifWorker = GifWorker.init();
 			this.gifWorker.on( 'error', function ( e ) {
 				console.log(e);
