@@ -11,7 +11,8 @@ require.config({
 		monopost   : "lib/monopost.min",
 		neuquant   : "lib/NeuQuant",
 		omggif     : "lib/omggif",
-		postal     : "lib/postal.min",
+		postal     : "lib/postal",
+		diags      : "lib/postal.diagnostics.min",
 		riveter    : "lib/riveter.min",
 		text       : "lib/text",
 		underscore : "lib/underscore-min"
@@ -42,9 +43,11 @@ require.config({
 });
 
 // load foundational libs
-require( ["backbone", "bootstrap", "jqbase64", "monopost"], function () {
+require( [ "diags", "backbone", "bootstrap", "jqbase64", "monopost"], function (DiagnosticsWireTap) {
+	//var wireTap = new DiagnosticsWireTap({ name: "console" });
 	// now load up the app
 	require( ["app", "postal"], function ( app, postal ) {
+		window.postal = postal;
 		app.init();
 	} );
 } );

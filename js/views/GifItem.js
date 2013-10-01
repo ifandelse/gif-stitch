@@ -24,14 +24,19 @@ define([
 				render : function () {
 					this.$el.html( this.progTemplate( this.model.toJSON() ) );
 				}
-				/*,
-				do we want to ditch an already 'stitching' gif if we cancel?
-				stop : "stopped"
-				*/
+				// do we want to ditch an already 'stitching' gif if we cancel? If so, uncomment this
+				//stop : "stopped"
 			},
 			rendered : {
 				render : function () {
 					this.$el.html( this.imgTemplate( this.model.toJSON() ) );
+                    this.delegateEvents({
+                        "click .glyphicon-remove" : "remove",
+                        "click .glyphicon-save"   : "onDownload",
+                        "click #lblFileName"      : "editFileName",
+                        "blur #fileName"          : "setFileName",
+                        "keyup #fileName"         : "handleEnterKey"
+                    });
 				}
 			},
 			stopped : {
@@ -77,14 +82,6 @@ define([
 
 		attributes : {
 			"class" : "gif-item img"
-		},
-
-		events : {
-			"click .glyphicon-remove" : "remove",
-			"click .glyphicon-save"   : "onDownload",
-			"click #lblFileName"      : "editFileName",
-			"blur #fileName"          : "setFileName",
-			"keyup #fileName"         : "handleEnterKey"
 		},
 
 		editFileName : function () {

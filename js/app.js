@@ -6,7 +6,7 @@ define([
 	'GifWorker'
 ], function ( Backbone, $, InputView, GifCollectionView, GifWorker ) {
 	var app = {
-		views : { items : [] },
+		views : {},
 		init : function () {
 			this.views.input = new InputView().render();
 			this.views.gitList = new GifCollectionView( { collection : new Backbone.Collection() } );
