@@ -16,7 +16,7 @@ define([
 		initialize : function () {
 			this.template = _.template( template );
 			this.polling = false;
-			this.frames = [];
+			this.framesCnt = 0;
 			this.model = new InputModel();
 		},
 
@@ -29,7 +29,8 @@ define([
 		},
 
 		publications : {
-			framesready : "omggif frames.ready",
+            stitch      : "omggif frames.ready",
+            frame       : "omggif frames.addFrame",
 			gifstarted  : "gifs gif.started",
 			gifstopped  : "gifs gif.stopped",
 			modeChange  : "gifs mode.change"
@@ -41,25 +42,30 @@ define([
 
 		capture : function () {
 			var self = this;
-			if ( this.frames.length < this.model.get( "framesPerGif" ) ) {
-				if ( this.frames.length === 0 ) {
+			if ( this.framesCnt < this.model.get( "framesPerGif" ) ) {
+				if ( this.framesCnt === 0 ) {
 					this.currentGifId = _.uniqueId( "gif_" );
 					this.trigger( "gifstarted", { gifId : this.currentGifId } );
 				}
 				this.context.drawImage( this.video, 0, 0, 720, 450 );
 				var imageData = this.context.getImageData( 0, 0, this.canvas.width, this.canvas.height );
-				this.frames.push( imageData );
+				this.trigger("frame", {
+                    type      : "frame",
+                    gifId     : this.currentGifId,
+                    imageData : imageData
+                });
+                this.framesCnt += 1;
 				this.startPoll();
 			} else {
 				_.defer(function() {
-					self.trigger( "framesready", {
-						frames      : self.frames,
+					self.trigger( "stitch", {
+                        type        : "stitch",
 						delay       : self.model.get( "delay" ),
 						matte       : [255, 255, 255],
 						transparent : [0, 255, 0],
 						gifId       : self.currentGifId
 					} );
-					self.frames = [];
+					self.framesCnt = 0;
 					self.currentGifId = undefined;
 				});
 			}

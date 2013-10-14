@@ -5,9 +5,10 @@ define([
 	'text!templates/gifItemTemplate.html',
 	'text!templates/progressTemplate.html',
 	'text!templates/capturingTemplate.html',
+	'text!templates/renderingTemplate.html',
 	'postal',
 	'machina'
-], function ( backbrace, $, _, gifItemTemplate, progressTemplate, capturingTemplate, postal, machina ) {
+], function ( backbrace, $, _, gifItemTemplate, progressTemplate, capturingTemplate, renderingTemplate, postal, machina ) {
 
 	var Fsm = machina.Fsm.extend( {
 
@@ -27,6 +28,11 @@ define([
 				// do we want to ditch an already 'stitching' gif if we cancel? If so, uncomment this
 				//stop : "stopped"
 			},
+            rendering : {
+                render : function () {
+                    this.$el.html( this.renderingTemplate( this.model.toJSON() ) );
+                }
+            },
 			rendered : {
 				render : function () {
 					this.$el.html( this.imgTemplate( this.model.toJSON() ) );
@@ -59,6 +65,7 @@ define([
 			this.imgTemplate = _.template( gifItemTemplate );
 			this.progTemplate = _.template( progressTemplate );
 			this.capturingTemplate = _.template( capturingTemplate );
+			this.renderingTemplate = _.template( renderingTemplate );
 			this.model.on( "change", _.bind( this.render, this ) );
 			postal.subscribe( {
 				channel : "omggif",
@@ -141,6 +148,11 @@ define([
 			this.model.set( data, { silent : true } );
 			this.render();
 		},
+
+        ongifmeta : function( data ) {
+            this.transition( "rendering" );
+            this.model.set( data );
+        },
 
 		onGifStopped : function () {
 			this.handle( "stop" );

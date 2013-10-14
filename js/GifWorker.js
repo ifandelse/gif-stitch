@@ -5,7 +5,7 @@ define([
 ], function ( Monologue, urlHelpers ) {
 	return _.extend( {
 
-		onFramesReady : function ( d, e ) {
+		notifyWorker : function ( d, e ) {
 			this.worker.postMessage( d );
 		},
 
@@ -20,7 +20,13 @@ define([
 						dataURL : urlHelpers.toData( urlHelpers.toRawData( e.data.data ) ),
 						gifId : e.data.gifId
 					} );
-				} else if ( e.data && e.data.type === "progress" ) {
+                } else if ( e.data && e.data.type === "gifmeta" ) {
+                    self.emit( "gifmeta", {
+                        gifId : e.data.gifId,
+                        encodeTime : e.data.encodeTime,
+                        frameCount : e.data.frameCount
+                    } );
+                } else if ( e.data && e.data.type === "progress" ) {
 					self.emit( "progress", {
 						gifId : e.data.gifId,
 						progress : parseInt((e.data.data * 100 ),10) //rounding to int
@@ -34,7 +40,8 @@ define([
 
 			self.goPostal( "omggif" );
 			self.goLocal( {
-				"omggif frames.ready" : "onFramesReady"
+				"omggif frames.addFrame" : "notifyWorker",
+				"omggif frames.ready"    : "notifyWorker"
 			} );
 			return self;
 		}

@@ -66,74 +66,95 @@ var rgb2num = function ( palette ) {
 	return colors;
 };
 
+var frames = [];
+
+var handlers = {
+    frame : function( data ) {
+        frames.push( data.imageData );
+    },
+
+    stitch: function( data ) {
+        var framesLength = frames.length;
+        var delay = data.delay / 10;
+        var id = data.gifId;
+
+        var matte = data.matte ? data.matte : [255, 255, 255];
+        var transparent = data.transparent ? data.transparent : false;
+        var transparent = data.transparent ? data.transparent : false;
+
+        var startTime = Date.now();
+
+        var buffer = new Uint8Array( frames[0].width * frames[0].height * framesLength * 5 );
+        var gif = new GifWriter( buffer, frames[0].width, frames[0].height, { loop : 0 } );
+        // var pixels = new Uint8Array( frames[0].width * frames[0].height );
+
+        var addFrame = function ( frame ) {
+            var data = frame.data;
+
+            // Make palette with NeuQuant.js
+            var nqInPixels = rgba2rgb( data, matte, transparent );
+            var len = nqInPixels.length;
+            var nPix = len / 3;
+            var map = [];
+            var nq = new NeuQuant( nqInPixels, len, 10 );
+            // initialize quantizer
+            var paletteRGB = nq.process(); // create reduced palette
+            var palette = rgb2num( paletteRGB );
+            // map image pixels to new palette
+            var k = 0;
+            for ( var j = 0; j < nPix; j++ ) {
+                var index = nq.map( nqInPixels[k++] & 0xff, nqInPixels[k++] & 0xff, nqInPixels[k++] & 0xff );
+                // usedEntry[index] = true;
+                map[j] = index;
+            }
+
+            var options = { palette : new Uint32Array( palette ), delay : delay };
+
+            if ( thereAreTransparentPixels ) {
+                options.transparent = nq.map( transparent[0], transparent[1], transparent[2] );
+                options.disposal = 2; // Clear between frames
+            }
+
+            gif.addFrame( 0, 0, frame.width, frame.height, new Uint8Array( map ), options );
+        };
+
+        var i;
+        // Add all frames
+        for ( i = 0; i < framesLength; i++ ) {
+            addFrame( frames[i] );
+            self.postMessage( {
+                type : "progress",
+                data : (i + 1) / framesLength,
+                gifId : id
+            } );
+        }
+
+        // Finish
+        var gifString = '';
+        var l = gif.end();
+        for ( i = 0; i < l; i++ ) {
+            gifString += String.fromCharCode( buffer[ i ] );
+        }
+
+        self.postMessage({
+            type : "gifmeta",
+            frameCount : framesLength,
+            encodeTime : Date.now() - startTime,
+            gifId : id
+        });
+
+        self.postMessage( {
+            type : "gif",
+            data : gifString,
+            gifId : id
+        } );
+
+        frames = [];
+    }
+};
+
 onmessage = function ( event ) {
-	var frames = event.data.frames;
-	var framesLength = frames.length;
-	var delay = event.data.delay / 10;
-	var id = event.data.gifId;
-
-	var matte = event.data.matte ? event.data.matte : [255, 255, 255];
-	var transparent = event.data.transparent ? event.data.transparent : false;
-
-	var startTime = Date.now();
-
-	var buffer = new Uint8Array( frames[0].width * frames[0].height * framesLength * 5 );
-	var gif = new GifWriter( buffer, frames[0].width, frames[0].height, { loop : 0 } );
-	// var pixels = new Uint8Array( frames[0].width * frames[0].height );
-
-	var addFrame = function ( frame ) {
-		var data = frame.data;
-
-		// Make palette with NeuQuant.js
-		var nqInPixels = rgba2rgb( data, matte, transparent );
-		var len = nqInPixels.length;
-		var nPix = len / 3;
-		var map = [];
-		var nq = new NeuQuant( nqInPixels, len, 10 );
-		// initialize quantizer
-		var paletteRGB = nq.process(); // create reduced palette
-		var palette = rgb2num( paletteRGB );
-		// map image pixels to new palette
-		var k = 0;
-		for ( var j = 0; j < nPix; j++ ) {
-			var index = nq.map( nqInPixels[k++] & 0xff, nqInPixels[k++] & 0xff, nqInPixels[k++] & 0xff );
-			// usedEntry[index] = true;
-			map[j] = index;
-		}
-
-		var options = { palette : new Uint32Array( palette ), delay : delay };
-
-		if ( thereAreTransparentPixels ) {
-			options.transparent = nq.map( transparent[0], transparent[1], transparent[2] );
-			options.disposal = 2; // Clear between frames
-		}
-
-		gif.addFrame( 0, 0, frame.width, frame.height, new Uint8Array( map ), options );
-	};
-
-	var i;
-	// Add all frames
-	for ( i = 0; i < framesLength; i++ ) {
-		addFrame( frames[i] );
-		self.postMessage( {
-			type : "progress",
-			data : (i + 1) / framesLength,
-			gifId : id
-		} );
-	}
-
-	// Finish
-	var gifString = '';
-	var l = gif.end();
-	for ( i = 0; i < l; i++ ) {
-		gifString += String.fromCharCode( buffer[ i ] );
-	}
-
-	self.postMessage( {
-		type : "gif",
-		data : gifString,
-		frameCount : framesLength,
-		encodeTime : Date.now() - startTime,
-		gifId : id
-	} );
+    if(event.data.type && handlers[event.data.type]) {
+        handlers[event.data.type](event.data);
+    }
 };
