@@ -1,3 +1,6 @@
+@import url('/css/bootstrap.css');
+@import url('/css/bootstrap-theme.css');
+
 #input-form {
     height: 20%;
 }

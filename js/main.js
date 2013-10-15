@@ -1,3 +1,4 @@
+/* global require */
 require.config({
 
 	paths: {
@@ -6,7 +7,7 @@ require.config({
 		bootstrap  : "lib/bootstrap.min",
 		jquery     : "lib/jquery-1.10.2.min",
 		jqbase64   : "lib/jquery.base64.min",
-		machina    : "lib/machina",
+		machina    : [ "http://cdnjs.cloudflare.com/ajax/libs/machina.js/0.3.4/machina.min", "lib/machina" ],
 		monologue  : "lib/monologue.min",
 		monopost   : "lib/monopost.min",
 		neuquant   : "lib/NeuQuant",
@@ -43,11 +44,8 @@ require.config({
 });
 
 // load foundational libs
-require( [ "diags", "backbone", "bootstrap", "jqbase64", "monopost"], function (DiagnosticsWireTap) {
-	//var wireTap = new DiagnosticsWireTap({ name: "console" });
-	// now load up the app
-	require( ["app", "postal"], function ( app, postal ) {
-		window.postal = postal;
+require( [ "infrastructure" ], function () {
+	require( [ "app" ], function ( app ) {
 		app.init();
 	} );
 } );
